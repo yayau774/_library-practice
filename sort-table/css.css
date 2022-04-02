@@ -1,0 +1,42 @@
+
+table.sort-target {
+    border: black solid 1px;
+    border-collapse: collapse;
+}
+
+table.sort-target * {
+    padding: 2px 5px;
+    border: black solid 1px;
+}
+
+thead *.sort-trigger{
+    text-decoration: underline;
+}
+thead *.sort-trigger:active{
+    text-shadow: 0 0 0.3em red;
+}
+
+
+thead *.sort-trigger::after{
+    content: "　⇅";
+}
+thead *.sort-asc::after{
+    content: "　▲";
+}
+thead *.sort-desc::after{
+    content: "　▼";
+}
+
+
+
+
+/*
+てすと表示用
+*/
+table.sort-target tr td:nth-of-type(1) {
+    width: 200px;
+}
+table.sort-target tr td:nth-of-type(2) {
+    width: 200px;
+}
+
