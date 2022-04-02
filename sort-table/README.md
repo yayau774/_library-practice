@@ -1,4 +1,4 @@
-# table-sort.js
+# sort-table.js
 
 テーブルにソート機能を与えるJavaScriptライブラリ。
 
