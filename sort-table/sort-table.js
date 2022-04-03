@@ -1,5 +1,6 @@
 /**
  * テーブルにソート機能を与えるJavaScriptライブラリ。
+ * 2022-04-03 11:00:11
  */
 
 /**
@@ -18,25 +19,6 @@ function sortTable(e){
         ? /sortrule-(\w+)/.exec(cell.className)[1]
         : "string";
 
-    //  tbody内のtrを配列化してrowsに入れる　そーと用
-    let rows = Array.from(tbody.querySelectorAll("tr"));
-
-    //  そーと！
-    //  rows内のcolNum列を見比べて並び替える
-    rows.sort((a, b) => {
-        let ac = a.cells[colNum].textContent; 
-        let bc = b.cells[colNum].textContent;
-
-        //  ソートルールに関わらず空欄を最後尾に回したり、同値を維持したり。
-        if(ac === bc){ return  0; }
-        if(ac === ""){ return  1; }
-        if(bc === ""){ return -1; }
-
-        //  ルールに従ったソート
-        return sortTable[rule](ac, bc);
-
-    });
-
     //  ソートをトリガーした要素が直前と同じなら降順ソートにする
     //  そうでなければトリガーした要素を記憶して昇順ソートに設定
     if(sortTable.last.element === cell){
@@ -53,9 +35,28 @@ function sortTable(e){
         sortTable.last.element = cell;
         sortTable.last.isAsc   = true;
     }
+
+    //  tbody内のtrを配列化してrowsに入れる　そーと用
+    let rows = Array.from(tbody.querySelectorAll("tr"));
+
+    //  そーと！
+    //  rows内のcolNum列を見比べて並び替える
+    rows.sort((a, b) => {
+        let ac = a.cells[colNum].textContent; 
+        let bc = b.cells[colNum].textContent;
+
+        //  ソートルールに関わらず空欄を最後尾に回したり、同値を維持したり。
+        if(ac === bc){ return  0; }
+        if(ac === ""){ return  1 * (sortTable.last.isAsc ? 1 : -1); }
+        if(bc === ""){ return -1 * (sortTable.last.isAsc ? 1 : -1); }
+
+        //  ルールに従ったソート
+        return sortTable[rule](ac, bc) * (sortTable.last.isAsc ? 1 : -1);
+
+    });
     
     //  ソートしたやつを反映。
-    (sortTable.last.isAsc ? rows : rows.reverse()).forEach(tr => tbody.appendChild(tr));
+    rows.forEach(tr => tbody.appendChild(tr));
 
     console.log(
         "clicked: "      + cell.textContent,
